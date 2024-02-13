@@ -1,0 +1,10 @@
+.scrollable-table {
+    height: 700px; /* Adjust this value as needed */
+    overflow-y: auto;
+}
+.scrollable-table th {
+    position: sticky;
+    top: 0;
+    background: white; /* Add a background color to prevent cells from showing through */
+    z-index: 1; /* Add a z-index to ensure the header stays on top */
+}

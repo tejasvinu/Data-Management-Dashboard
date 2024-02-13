@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-
+import '../css/dbview.css';
+/**
+ * Renders a data management dashboard view.
+ * 
+ * @returns {JSX.Element} The DbView component.
+ */
 function DbView() {
     const [tableData, setTableData] = useState([]);
     const [newRow, setNewRow] = useState({});
@@ -14,6 +19,7 @@ function DbView() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+
     useEffect(() => {
         fetchData(); // Fetch data initially
     }, []);
@@ -24,11 +30,13 @@ function DbView() {
         try {
             const response = await axios.get(`http://localhost:8080/api/${getApiParam()}${id}`);
             const data = response.data.fileName;
+            console.log(response);
             const newdata = JSON.parse(data);
             console.log(newdata);
             setTableData(newdata);
             setIsLoading(false);
         } catch (error) {
+            console.error('Error fetching data:', error);
             setError(error);
             setIsLoading(false);
         }
@@ -59,7 +67,8 @@ function DbView() {
 
     const handleShowEditModal = (rowId) => {
         setSelectedRowId(rowId); // Set the selected row ID for editing
-        const selectedRow = tableData.find(row => row.id === rowId);
+        console.log(rowId)
+        const selectedRow = tableData.find(row => row === rowId);
         setNewRow(selectedRow); // Populate the newRow state with the selected row's data
         setShowEditModal(true); // Show the modal for editing
     };
@@ -106,29 +115,31 @@ function DbView() {
             <h2>Table Data</h2>
             {isLoading && <p>Loading...</p>}
             {error && <p>Error: {error.message}</p>}
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        {Object.keys(tableData[0] || {}).map((heading, index) => (
-                            <th key={index} scope="col">{heading}</th>
-                        ))}
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableData.map((row, rowIndex) => (
-                        <tr key={rowIndex}>
-                            {Object.keys(row).map((key, colIndex) => (
-                                <td key={colIndex}>{Array.isArray(row[key]) ? row[key].join(", ") : String(row[key])}</td>
+            <div className="scrollable-table">
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            {Object.keys(tableData[0] || {}).map((heading, index) => (
+                                <th key={index} scope="col">{heading}</th>
                             ))}
-                            <td>
-                                <button className="btn btn-danger" onClick={() => handleDeleteRow(row)}>Delete</button>
-                                <button className="btn btn-primary ms-2" onClick={() => handleShowEditModal(row.id)}>Edit</button>
-                            </td>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {tableData.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                                {Object.keys(row).map((key, colIndex) => (
+                                    <td key={colIndex}>{Array.isArray(row[key]) ? row[key].join(", ") : String(row[key])}</td>
+                                ))}
+                                <td>
+                                    <button className="btn btn-danger" onClick={() => handleDeleteRow(row)}>Delete</button>
+                                    <button className="btn btn-primary ms-2" onClick={() => handleShowEditModal(row)}>Edit</button>
+                                </td>
+                            </tr>
+                        ))}+
+                    </tbody>
+                </table>
+            </div>
             <Button variant="primary" onClick={handleShowInsertModal}>
                 Add New Row
             </Button>

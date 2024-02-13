@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useHistory for programmatic navigation
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import '../css/dblist.css'
 function LinksList() {
   const [links, setLinks] = useState([]);
   const [databaseType, setDatabaseType] = useState('mysql');
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState([]);
+  const togglePasswordVisibility = (index) => {
+    const newShowPassword = [...showPassword];
+    newShowPassword[index] = !newShowPassword[index];
+    setShowPassword(newShowPassword);
+  };
 
   useEffect(() => {
     fetchLinks();
@@ -22,6 +30,7 @@ function LinksList() {
 
       const response = await axios.get(endpoint);
       setLinks(response.data);
+      setShowPassword(new Array(response.data.length).fill(false));
     } catch (error) {
       console.error('Error fetching links:', error);
     }
@@ -59,16 +68,25 @@ function LinksList() {
           </tr>
         </thead>
         <tbody>
-          {links.map((link, rowIndex) => (
+        {links.map((link, rowIndex) => (
             <tr key={rowIndex}>
               {tableHeadings.map((heading, colIndex) => (
-                <td key={colIndex}>{link[heading]}</td>
+                  <td key={colIndex}>
+                    {heading === 'password' ? (
+                        <>
+                          {showPassword[rowIndex] ? link[heading] : '••••••'}
+                          <FontAwesomeIcon className="icon" onClick={() => togglePasswordVisibility(rowIndex)} icon={showPassword[rowIndex] ? faEyeSlash : faEye} />
+                        </>
+                    ) : (
+                        link[heading]
+                    )}
+                  </td>
               ))}
               <td>
                 <button className="btn btn-primary" onClick={() => handleLinkClick(link.id)}>View</button>
               </td>
             </tr>
-          ))}
+        ))}
         </tbody>
       </table>
     </div>

@@ -11,6 +11,7 @@ const MyNavbar = () => {
                     <Nav.Link href="/files">Files</Nav.Link>
                     <Nav.Link href="/links">Upload Links</Nav.Link>
                     <Nav.Link href="/linkslist">Links List</Nav.Link>
+                    <Nav.Link href="/Scrapers">Scrapers List</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

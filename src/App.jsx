@@ -7,6 +7,7 @@ import LinkUpload from './components/LinkUpload';
 import LinksList from './components/FileList';
 import DbView from './components/DbView';
 import DbList from './components/DbList';
+import ScraperList from "./components/ScraperList.jsx";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/links" element={<LinkUpload />} />
           <Route path="/linksList" element={<DbList />} />
           <Route path="/tableData/:id" element={<DbView />} />
+            <Route path="/scrapers" element={<ScraperList />} />
         </Routes>
       </Router>
     </div>
