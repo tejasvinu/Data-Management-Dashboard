@@ -8,7 +8,8 @@ import LinksList from './components/FileList';
 import DbView from './components/DbView';
 import DbList from './components/DbList';
 import ScraperList from "./components/ScraperList.jsx";
-
+import FileUploadComponent from "./components/file2dbUpload.jsx";
+import ScraperUploadComponent from "./components/ScraperUpload.jsx";
 function App() {
 
   return (
@@ -22,6 +23,8 @@ function App() {
           <Route path="/linksList" element={<DbList />} />
           <Route path="/tableData/:id" element={<DbView />} />
             <Route path="/scrapers" element={<ScraperList />} />
+            <Route path="/file2db" element={<FileUploadComponent />} />
+            <Route path="/scraperUpload" element={<ScraperUploadComponent />} />
         </Routes>
       </Router>
     </div>
