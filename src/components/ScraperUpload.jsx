@@ -21,7 +21,7 @@ function ScraperUploadComponent() {
         formData.append('file', selectedFile);
 
         try {
-            const response = await axios.post('/upload', formData, {
+            const response = await axios.post('http://localhost:8080/scraper/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 

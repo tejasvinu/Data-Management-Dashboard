@@ -100,11 +100,13 @@ function DbView() {
 
     const handleUpdateRow = async () => {
         try {
+            console.log(newRow);
             await axios.put(`http://localhost:8080/api/${getApiParam()}${id}`, newRow);
             setNewRow({}); // Clear newRow state
             setSelectedRowId(null); // Clear selected row ID
+            console.log(newRow);
             handleCloseEditModal(); // Close the modal after updating
-            fetchData(); // Refresh data after updating row
+            await fetchData(); // Refresh data after updating row
         } catch (error) {
             console.error('Error updating row:', error);
         }
